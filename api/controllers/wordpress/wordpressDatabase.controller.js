@@ -5,13 +5,21 @@ const WordpressModel = require('./../../lib/db/models/wordpress');
 const HttpError = require('./../../lib/utils/http-error');
 
 // GETTING WORDPRESS VERSIONS
+async function getVersions() {
+  return WordpressModel.find();
+}
+
+// GETTING CERTAIN VERIONS
+async function getVersionById(id) {
+  return WordpressModel.findById(id);
+}
 
 // ADDING WORDPRESS VERSION INTO DATABASE
-async function addVersion(input) {
+async function addVersion(body) {
   let wordpress = new WordpressModel({
-    url: input.url,
-    isWordpress: input.isWordpress,
-    version: input.version
+    url: body.url,
+    isWordpress: body.isWordpress,
+    version: body.version
   });
 
   try {
@@ -21,6 +29,22 @@ async function addVersion(input) {
   }
 }
 
+// DELETING BY ID
+async function deleteVersion(id) {
+  try {
+    return await WordpressModel.findByIdAndRemove(id);
+  } catch (err) {
+    if (err.message.indexOf('Cast to objectId failed') !== -1) {
+      throw new HttpError('Bad request', 'Version not found for id', 400);
+    } else {
+      throw new HttpError('Bad request', 'Internal server error', 500);
+    }
+  }
+}
+
 module.exports = {
-  addVersion: addVersion
+  getVersions: getVersions,
+  getVersionById: getVersionById,
+  addVersion: addVersion,
+  deleteVersion: deleteVersion
 }
