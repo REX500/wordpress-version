@@ -16,17 +16,19 @@ async function getVersionById(id) {
 
 // ADDING WORDPRESS VERSION INTO DATABASE
 async function addVersion(body) {
+  console.log(body.url+body.isWordpress+body.version);
   let wordpress = new WordpressModel({
     url: body.url,
     isWordpress: body.isWordpress,
     version: body.version
   });
 
-  try {
-    return await wordpress.save();
-  } catch (err) {
-    throw new HttpError('Bad request', 'Cannot save version', 500);
-  }
+  return await wordpress.save();
+  // try {
+  //   return await wordpress.save();
+  // } catch (err) {
+  //   throw new HttpError('Bad request', 'Cannot save version', 500);
+  // }
 }
 
 // DELETING BY ID

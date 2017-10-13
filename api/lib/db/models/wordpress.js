@@ -14,7 +14,7 @@ let wordpress = mongoose.Schema({
   },
   version: {
     type: String,
-    unique: true
+    unique: false
   }
 });
 
