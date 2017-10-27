@@ -2,7 +2,7 @@
 
 const express = require('express');
 const bodyParser = require('body-parser');
-// const cors = require('cors');
+const cors = require('cors');
 
 // routes
 const api = require('./api/routes/apiRoutes');
@@ -20,6 +20,7 @@ app.disable('x-powered-by');
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cors());
 
 app.use('/api/', api);
 
