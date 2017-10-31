@@ -8,7 +8,10 @@ const dbController = require('./wordpressDatabase.controller');
 // get website's framework bellow
 const rp = require('request-promise');
 
+// public fields bellow
+// if the version is found
 let result = {};
+// if we didnt find the version
 let resultBad = {};
 let resultSemiBed = {};
 resultSemiBed.wordpress = true;
