@@ -3,6 +3,7 @@
 const co = require('co');
 const WordpressModel = require('./../../lib/db/models/wordpress');
 const HttpError = require('./../../lib/utils/http-error');
+const validators = require('./../../lib/validators/validator');
 
 // GETTING WORDPRESS VERSIONS
 async function getVersions() {
@@ -16,19 +17,31 @@ async function getVersionById(id) {
 
 // ADDING WORDPRESS VERSION INTO DATABASE
 async function addVersion(body) {
-  console.log(body.url+body.isWordpress+body.version);
+  console.log('Adding wordpress version...');
   let wordpress = new WordpressModel({
     url: body.url,
     isWordpress: body.isWordpress,
     version: body.version
   });
+  console.log('Object constructed....');
+  console.log('Validating...');
 
-  return await wordpress.save();
-  // try {
-  //   return await wordpress.save();
-  // } catch (err) {
-  //   throw new HttpError('Bad request', 'Cannot save version', 500);
-  // }
+  /*********************************************/
+  /*      VALIDATING WEB URL AND VERSION       */
+  /*********************************************/
+
+  if (wordpress.url && !validator.valWebsite(wordpress.url)) {
+    throw new HttpError('Bad request', 'Invalid url format', 400);
+  }
+  if (wordpress.version && !validator.valString(wordpress.version)) {
+    throw new HttpError('Bad request', 'Invalid version', 400);
+  }
+  
+  try {
+    return await wordpress.save();
+  } catch (err) {
+    throw new HttpError('Bad request', 'Cannot save version', 500);
+  }
 }
 
 // DELETING BY ID
