@@ -1,5 +1,8 @@
 'use strict';
 
+// loading eng file
+require('dotenv').config();
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -14,7 +17,7 @@ var morgan = require('morgan');
 let app = express();
 
 // mongo url
-db('mongodb://localhost/wordpress-db');
+db(process.env.MONGO_URL);
 
 app.disable('x-powered-by');
 app.use(morgan('dev'));
@@ -24,8 +27,8 @@ app.use(cors());
 
 app.use('/api/', api);
 
-app.listen(3004, () => {
-  console.log('Listening on port 3004');
+app.listen(process.env.PORT, () => {
+  console.log('Listening on port ' + process.env.PORT);
 });
 
 module.exports = app;
