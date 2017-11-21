@@ -11,11 +11,16 @@ async function authenticateUser(body) {
   if (!user) {
     throw new HttpError('Bad request', 'Wrong email', 404);
   }
+  console.log('User found');
 
   const isMatch = bcrypt.compareSync(body.password, user.password);
 
   if (isMatch) {
-    const token = jwt.sign(user, 'secret', { expiresIn: 604800});
+    console.log('Its a match');
+    // console.log(user);
+    const token = jwt.sign(user.toJSON(), process.env.SECRET_KEY, {
+      expiresIn: 604800
+    });
 
     return await { token: 'JWT' + token};
   } else {

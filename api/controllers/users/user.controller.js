@@ -2,7 +2,8 @@
 
 const User = require('./../../lib/db/models/user');
 const HttpError = require('./../../lib/utils/http-error');
-const bcrypt = require('bcryptjs');
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 
 async function getUsers() {
   return await User.find({});
@@ -18,9 +19,12 @@ async function addUser(body) {
       createdAt: new Date(),
       updatedAt: new Date()
     });
+    console.log('password ' + newUser.password);
 
-    const salt = bcrypt.genSaltSync(10);
-    const hash = bcrypt.hashSync(newUser.password, salt);
+    const salt = await bcrypt.genSalt(saltRounds);
+    console.log('salt ' + salt);
+    const hash = await bcrypt.hash(newUser.password, salt);
+    console.log('Hashed password: ' + hash);
     newUser.password = hash;
 
     return await newUser.save();
