@@ -18,16 +18,25 @@ async function authenticateUser(body) {
   if (isMatch) {
     console.log('Its a match');
     // console.log(user);
-    const token = jwt.sign(user.toJSON(), process.env.SECRET_KEY, {
+    const jwtSignObject = {
+      id: user.id,
+      user: user.toJSON()
+    };
+    const token = jwt.sign(jwtSignObject, process.env.SECRET_KEY, {
       expiresIn: 604800
     });
 
-    return await { token: 'JWT' + token};
+    return await { token: token};
   } else {
     throw new HttpError('Bad request', 'Wrong password', 400);
   }
 }
 
+async function checkLogin() {
+  return {status: 'logged in'};
+}
+
 module.exports = {
-  authenticateUser
+  authenticateUser,
+  checkLogin
 }

@@ -36,7 +36,16 @@ async function addUser(body) {
   }
 }
 
+async function deleteUser(id) {
+  try {
+    return await User.findByIdAndRemove(id);
+  } catch (err) {
+    throw new HttpError('Bad request', 'User cannot be deleted', 400);
+  }
+}
+
 module.exports = {
   getUsers: getUsers,
-  addUser: addUser
+  addUser: addUser,
+  deleteUser: deleteUser
 };
