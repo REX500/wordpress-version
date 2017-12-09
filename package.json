@@ -4,6 +4,8 @@
   "description": "Simple program based on node BE and angular FE",
   "scripts": {
     "start": "nodemon ./app.js",
+    "prod": "NODE_ENV=production nodemon ./app.js",
+    "stagging": "echo \"Error: no stagging yet\" && exit 1",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Filip Malek",
