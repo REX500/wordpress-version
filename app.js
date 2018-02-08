@@ -1,5 +1,8 @@
 'use strict';
 
+// Initiate env
+require('dotenv').config();
+
 const express = require('express');
 const bodyParser = require('body-parser');
 
@@ -21,7 +24,8 @@ app.disable('x-powered-by');
 
 app.use('/api/', api);
 
-app.listen(3004, () => {
-  console.log('Listening on port 3004');
+const port = parseInt(process.env.PORT) || 3000;
+app.listen(port, () => {
+  console.log('Listening on port ' + port);
 });
 module.exports = app;
